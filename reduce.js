@@ -75,7 +75,7 @@ let maxNum = nums.reduce((acc, num) => {
   //   return num;
   // }
   return acc > num ? acc : num;
-}, nums[0]);
+}, 0);
 /*
   Execution ourMax:
   Item1: acc 1,   item 1,  next value 1
@@ -233,5 +233,105 @@ let combos = words.reduce((arr, word, i, a) => {
            Combined Item: mule-code // Doesn't have a length of 13, so we don't add it
            Next value: [forklift-bale, bale-raindrop, raindrop-mule]
 
-
 */
+
+// Rebuilding the reduce function:
+
+// Recreate the reduce function with our own function
+
+// Structure of reduce:
+// Parameters: Callback with 2-4 parameters(accumulator, item, index, array),
+//             initialValue of the accumulator
+// Returns one item(string, number, array or object)
+
+function ourReduce(arr, callback, initialValue) {
+  // If the initialValue is not undefined, set the accumulator to that value
+  // Otherwise, use the first item in the array
+  let acc = initialValue !== undefined ? initialValue : arr[0];
+
+  for (let i = 0; i < arr.length; i++) {
+    // Reset the accumulator to be the result of the callback after every item
+    acc = callback(acc, arr[i], i, arr);
+  }
+
+  return acc;
+}
+
+let cards = [
+  { card: 'Queen', suit: 'Hearts', value: 10 },
+  { card: 'King', suit: 'Clubs', value: 10 },
+  { card: 'Jack', suit: 'Diamonds', value: 10 },
+  { card: 'Eight', suit: 'Hearts', value: 8 },
+  { card: 'Six', suit: 'Clubs', value: 6 },
+  { card: 'Three', suit: 'Spades', value: 3 }
+];
+
+cards.push({ card: 'Joker', suit: 'Black' });
+cards = cards.filter(item => item.value !== undefined); // Filter out cards that don't have a value
+
+// Sum the value of the cards within our deck
+let cardValues = cards.reduce((acc, card) => acc + card.value, 0);
+
+// Prototype:
+// Using our version of reduce on ANY array without passing it as a parameter
+Array.prototype.ourReduce = function(callback, initialValue) {
+  // If the initialValue is not undefined, set the accumulator to that value
+  // Otherwise, use the first item in the array
+  let acc = initialValue !== undefined ? initialValue : arr[0];
+
+  for (let i = 0; i < this.length; i++) {
+    // Reset the accumulator to be the result of the callback after every item
+    acc = callback(acc, this[i], i, arr);
+  }
+
+  return acc;
+};
+
+// Changing Date functionality
+
+// By default, the Date getMonth method returns a number instead of the name of the month. Lets create a method that gives the full name of the month instead
+
+// When working with a Date, we have access to one long string that is build by the constructor
+// Wed Sep 12 2018 15:19:08 GMT-0400 (Eastern Daylight Time)
+
+/*
+  Structure of the Date string:
+    1: Day of the week
+    2: Month of the year
+    3: Day of the month
+    4: Year
+    5: Current time in 24 hour-format
+    6: Time zone
+    7: Time zone name
+
+  To get access to the month, we have to look at the second word
+  To look at the second word in a sentence/string, we can use split(' ')
+*/
+
+// getFullMonth()
+Date.prototype.getFullMonth = function() {
+  // 'this' refers to the date object, and we must convert it to its string representation
+  let splitString = this.toString().split(' ');
+  // Get the month off of the string
+  let currentMonth = splitString[1];
+  // List of long month names
+  let monthList = {
+    Jan: 'January',
+    Feb: 'February',
+    Mar: 'March',
+    Apr: 'April',
+    May: 'May',
+    Jun: 'June',
+    Jul: 'July',
+    Aug: 'August',
+    Sep: 'September',
+    Oct: 'October',
+    Nov: 'November',
+    Dec: 'December'
+  };
+  // monthList['Sep'] returns 'September'
+  // Return the long value of the month from our monthList
+  return monthList[currentMonth];
+};
+
+// Or just use currentTime.toLocaleString('en-US', {month: 'long'})
