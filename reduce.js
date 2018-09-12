@@ -106,6 +106,7 @@ let sumOfLengths = fruits.reduce((acc, fruit) => acc + fruit.length, 0);
 
 */
 
+// Generate a list of concatenated words, with a - between each word
 const words = [
   'forklift',
   'bale',
@@ -198,3 +199,39 @@ const words = [
   'ox',
   'parade'
 ];
+
+let combos = words.reduce((arr, word, i, a) => {
+  // How to concatenate strings: either interpolation or + operation
+  if (a[i + 1]) {
+    // If we're not at the last item
+    let combinedWord = `${word}-${a[i + 1]}`;
+    if (combinedWord.length === 13) {
+      arr.push(combinedWord);
+    }
+  }
+  return arr; // Set the value of the accumulator for the next item
+}, []); // Second parameter of reduce is what the first argument for the callback will start off as
+/*
+  combos execution:
+    Item1: Acc: []   
+           Item: forklift  
+           Combined Item: forklift-bale 
+           Next value: [forklift-bale]
+    Item2: 
+           Acc: [forklift-bale] 
+           Item: bale 
+           Combined Item: bale-raindrop 
+           Next value: [forklift-bale, bale-raindrop]
+    Item3: 
+           Acc: [forklift-bale, bale-raindrop]    
+           Item: raindrop  
+           Combined Item: raindrop-mule 
+           Next value: [forklift-bale, bale-raindrop, raindrop-mule]
+    Item4:
+           Acc: [forklift-bale, bale-raindrop, raindrop-mule]
+           Item: mule
+           Combined Item: mule-code // Doesn't have a length of 13, so we don't add it
+           Next value: [forklift-bale, bale-raindrop, raindrop-mule]
+
+
+*/
