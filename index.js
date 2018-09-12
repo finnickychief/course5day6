@@ -131,3 +131,18 @@ let wordAry = [
 
 // if(word.length < 7)
 let shortWords = wordAry.filter(word => word.length < 7);
+
+function ourFilter(ary, callback) {
+  let newAry = [];
+
+  // Loop over all the items
+  for (let i = 0; i < ary.length; i++) {
+    // If the callback for an item results as truthy, we add it to our new array
+    if (callback(ary[i], i, ary)) {
+      newAry.push(ary[i]); // Add the item to the new array
+    }
+    // If the callback for an item results as falsy, we skip that item and do not add it to our new array
+  }
+
+  return newAry;
+}
